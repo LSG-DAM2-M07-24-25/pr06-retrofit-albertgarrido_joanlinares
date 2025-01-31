@@ -1,5 +1,6 @@
 package com.example.pr06_retrofit_albertgarrido_joanlinares
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -11,37 +12,23 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
 import com.example.pr06_retrofit_albertgarrido_joanlinares.ui.theme.Pr06retrofitalbertgarrido_joanlinaresTheme
+import com.example.pr06_retrofit_albertgarrido_joanlinares.view.EntryPoint
 
 class MainActivity : ComponentActivity() {
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             Pr06retrofitalbertgarrido_joanlinaresTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                Scaffold(modifier = Modifier.fillMaxSize()) {
+                    val navigationController = rememberNavController()
+                    //val windowSizeClass = calculateWindowSizeClass(this)
+                    EntryPoint(navigationController)
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    Pr06retrofitalbertgarrido_joanlinaresTheme {
-        Greeting("Android")
     }
 }

@@ -5,6 +5,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 
 @Composable
-fun HomeView(navigationController: NavController) {
+fun CardDetails(avigationController: NavController) {
     Text(text = "Home")
 }
