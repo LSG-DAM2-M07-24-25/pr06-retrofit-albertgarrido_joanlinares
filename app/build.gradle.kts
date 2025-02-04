@@ -1,8 +1,21 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
 }
+
+// Carga las propiedades locales desde el archivo local.properties
+val localProperties = Properties().apply {
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        load(localPropertiesFile.inputStream())
+    }
+}
+// Extrae la propiedad API_KEY o define un valor por defecto si no existe
+val apiKey: String = localProperties.getProperty("API_KEY") ?: "default_key"
+
 
 android {
     namespace = "com.example.pr06_retrofit_albertgarrido_joanlinares"
@@ -22,8 +35,7 @@ android {
         release {
             isMinifyEnabled = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
         }
     }
@@ -36,11 +48,19 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true  // Habilita la generación de BuildConfig
+
+
     }
 }
 
 dependencies {
-
+    //IMAGE
+    implementation("io.coil-kt:coil-compose:2.2.2")
+    //RETROFIT
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
