@@ -49,7 +49,7 @@ fun HomeView(navigationController: NavHostController, homeViewModel: HomeViewMod
                     modifier = Modifier.padding(16.dp)
                 )
             } else {
-                CardList(cards = cards, onCardClick = { card ->
+                CardList(cards = cards!!, onCardClick = { card ->
                     // Actualizar el LiveData con la carta seleccionada
                     homeViewModel.selectCard(card)
                     // Navegar a la pantalla de detalles sin pasar parámetros

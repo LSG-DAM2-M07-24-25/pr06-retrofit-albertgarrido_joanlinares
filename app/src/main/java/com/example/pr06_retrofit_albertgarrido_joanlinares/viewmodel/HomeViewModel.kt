@@ -16,9 +16,6 @@ class HomeViewModel(
     private val repository: CardRepository = CardRepository()
 ) : ViewModel() {
 
-    private val _isAddedToCart = MutableLiveData<Boolean>()
-    val isAddedToCart: LiveData<Boolean> get() = _isAddedToCart
-
     private val _cards = MutableLiveData<List<Card>>(emptyList())
     val cards: LiveData<List<Card>> get() = _cards
 
@@ -26,7 +23,8 @@ class HomeViewModel(
     val error: LiveData<String?> get() = _error
 
     // LiveData para la carta seleccionada
-    val selectedCard = MutableLiveData<Card?>()
+    private val _selectedCard = MutableLiveData<Card?>()
+    val selectedCard: LiveData<Card?> get() = _selectedCard
 
     // Repository para operaciones en Room (carrito)
     private val cartRepository = RoomRepository()
@@ -51,12 +49,26 @@ class HomeViewModel(
     }
 
     fun selectCard(card: Card) {
-        selectedCard.value = card
+        _selectedCard.value = card
     }
 
-    // Función para actualizar el estado "addedToCart"
+    /**
+     * Comprueba en la base de datos si la carta (por nombre) está en el carrito.
+     * Se ejecuta en Dispatchers.IO para no bloquear la UI.
+     */
+    suspend fun isCardInCart(name: String): Boolean {
+        return withContext(Dispatchers.IO) {
+            cartRepository.isAddedToCart(name)
+        }
+    }
+
+    /**
+     * Alterna el estado en Room (añade o quita la carta del carrito),
+     * sin actualizar un LiveData de boolean, sino que devuelves esa
+     * responsabilidad a la UI (CardDetails).
+     */
     fun toggleCartStatus(card: Card, isAdded: Boolean) {
-        viewModelScope.launch(Dispatchers.IO) {  // ✅ Ejecuta en un hilo en background
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 val pokemon = card.toPokemon(isAdded)
                 if (isAdded) {
@@ -64,23 +76,18 @@ class HomeViewModel(
                 } else {
                     cartRepository.removePokemonFromCart(pokemon)
                 }
-
-                // ✅ Para actualizar la UI, lo hacemos en el hilo principal
-                withContext(Dispatchers.Main) {
-                    _isAddedToCart.value = isAdded
-                }
             } catch (e: Exception) {
-                e.printStackTrace() // Loguear el error si ocurre
+                e.printStackTrace()
             }
         }
     }
 
-    // Función de extensión para convertir Card en Pokemon
+    // Función de extensión para convertir Card en Pokemon (con la URL de la imagen)
     fun Card.toPokemon(isAdded: Boolean): Pokemon {
         return Pokemon(
             name = this.name,
             type = this.types?.joinToString(", ") ?: this.supertype ?: "Desconocido",
-            image = this.images.large, // Cambia 0 por el recurso de imagen adecuado, e.g. R.drawable.ic_pokemon
+            image = this.images.large, // Es una URL, no un recurso local
             addedToCart = isAdded
         )
     }
