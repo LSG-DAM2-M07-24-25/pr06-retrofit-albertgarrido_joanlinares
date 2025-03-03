@@ -20,31 +20,38 @@ import com.example.pr06_retrofit_albertgarrido_joanlinares.nav.Routes
 import com.example.pr06_retrofit_albertgarrido_joanlinares.viewmodel.CartViewModel
 
 @Composable
-fun CartView(navigationController: NavHostController, cartViewModel: CartViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+fun CartView(
+    navigationController: NavHostController,
+    cartViewModel: CartViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+) {
+    // Obtenemos la lista de Pokémon en el LiveData
     val cartItems by cartViewModel.cartItems.observeAsState(emptyList())
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp)
     ) {
+        // Un botón para volver a la lista de cartas
         item {
             Button(
                 modifier = Modifier.padding(16.dp),
                 onClick = {
-                    navigationController.navigate(Routes.Screen1.route)
+                    navigationController.popBackStack()
                 }
             ) {
-                Text(text = "Cartas")
+                Text(text = "Volver a Cartas")
             }
         }
+        // Mostramos cada Pokémon del carrito
         items(cartItems) { pokemon ->
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp)
             ) {
+                // Usamos Coil (rememberAsyncImagePainter) para URL
                 Image(
-                    painter = rememberAsyncImagePainter(model = pokemon.image), // ✅ Usa Coil para cargar la imagen desde URL
+                    painter = rememberAsyncImagePainter(model = pokemon.image),
                     contentDescription = pokemon.name,
                     modifier = Modifier
                         .size(64.dp)
@@ -64,3 +71,4 @@ fun CartView(navigationController: NavHostController, cartViewModel: CartViewMod
         }
     }
 }
+

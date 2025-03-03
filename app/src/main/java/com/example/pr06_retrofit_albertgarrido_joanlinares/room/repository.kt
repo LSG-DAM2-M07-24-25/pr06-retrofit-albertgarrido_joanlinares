@@ -5,8 +5,9 @@ import com.example.pr06_retrofit_albertgarrido_joanlinares.model.Pokemon
 class Repository {
     private val daoInterface = PokemonApplication.database.pokemonDao()
 
-    suspend fun getAddedToCart(): MutableList<Pokemon> = daoInterface.getAddedToCart()
-
+    fun getAddedToCart(): MutableList<Pokemon> {
+        return daoInterface.getAddedToCart()
+    }
     suspend fun findByName(pokemon: Pokemon): Boolean =
         daoInterface.findByName(pokemon.name).isNotEmpty()
 

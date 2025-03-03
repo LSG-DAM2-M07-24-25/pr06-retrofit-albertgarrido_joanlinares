@@ -9,6 +9,7 @@ import androidx.room.PrimaryKey
 data class Pokemon(
     @PrimaryKey val name: String,
     val type: String,
-    val image: String,
-    @ColumnInfo(name = "is_favorite") var addedToCart: Boolean = false
+    val image: String,    // Debe ser String si almacenas URL
+    @ColumnInfo(name = "is_favorite")
+    var addedToCart: Boolean = false
 )
