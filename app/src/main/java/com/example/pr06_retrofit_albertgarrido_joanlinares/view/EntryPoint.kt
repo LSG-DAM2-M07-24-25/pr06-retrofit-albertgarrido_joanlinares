@@ -1,6 +1,5 @@
 package com.example.pr06_retrofit_albertgarrido_joanlinares.view
 
-import CardDetails
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController

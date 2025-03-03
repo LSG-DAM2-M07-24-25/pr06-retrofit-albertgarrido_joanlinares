@@ -39,7 +39,7 @@ fun HomeView(navigationController: NavHostController, homeViewModel: HomeViewMod
                     navigationController.navigate(Routes.Screen3.route)
                 }
             ) {
-                Text(text = "Álbum")
+                Text(text = "Carrito")
             }
         }
         item {

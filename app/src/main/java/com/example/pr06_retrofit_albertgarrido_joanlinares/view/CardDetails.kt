@@ -1,3 +1,5 @@
+package com.example.pr06_retrofit_albertgarrido_joanlinares.view
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -27,7 +29,7 @@ fun CardDetails(
     homeViewModel: HomeViewModel
 ) {
     val card = homeViewModel.selectedCard.observeAsState().value
-    // Estado para alternar el ícono de carrito
+    // Estado para el ícono de carrito
     var isCartFilled by remember { mutableStateOf(false) }
 
     if (card == null) {
@@ -62,7 +64,10 @@ fun CardDetails(
             item {
                 Box(modifier = Modifier.fillMaxWidth()) {
                     IconButton(
-                        onClick = { isCartFilled = !isCartFilled },
+                        onClick = {
+                            isCartFilled = !isCartFilled
+                            homeViewModel.toggleCartStatus(card, isCartFilled)
+                        },
                         modifier = Modifier
                             .align(Alignment.TopEnd)
                             .padding(16.dp)
