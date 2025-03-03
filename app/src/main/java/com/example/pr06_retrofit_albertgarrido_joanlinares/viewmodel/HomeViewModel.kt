@@ -1,6 +1,6 @@
 package com.example.pr06_retrofit_albertgarrido_joanlinares.viewmodel
 
-
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pr06_retrofit_albertgarrido_joanlinares.api.CardRepository
@@ -26,14 +26,19 @@ class HomeViewModel(
     private fun fetchCards() {
         viewModelScope.launch {
             try {
+                Log.d("HomeViewModel", "Fetching cards from API...")
                 val cardsList = repository.getAllCards()
-                if (cardsList != null) {
+
+                if (!cardsList.isNullOrEmpty()) {
                     _cards.value = cardsList
+                    Log.d("HomeViewModel", "Fetched ${cardsList.size} cards")
                 } else {
                     _error.value = "Error al obtener las cartas."
+                    Log.e("HomeViewModel", "API returned null or empty list")
                 }
             } catch (e: Exception) {
                 _error.value = "Excepción: ${e.message}"
+                Log.e("HomeViewModel", "Exception fetching cards: ${e.message}", e)
             }
         }
     }
