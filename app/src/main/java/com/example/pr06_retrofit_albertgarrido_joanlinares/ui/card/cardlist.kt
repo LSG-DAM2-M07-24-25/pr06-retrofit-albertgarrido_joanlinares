@@ -47,7 +47,7 @@ fun CardItem(card: PokemonCard, onCardClick: () -> Unit) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(500.dp),  // Puedes ajustar o quitar la altura fija si lo deseas
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.FillBounds
             )
             Spacer(modifier = Modifier.height(8.dp))
         }

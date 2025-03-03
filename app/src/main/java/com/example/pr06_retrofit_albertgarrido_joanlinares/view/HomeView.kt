@@ -23,8 +23,7 @@ import com.example.pr06_retrofit_albertgarrido_joanlinares.viewmodel.HomeViewMod
 
 
 @Composable
-fun HomeView(navigationController: NavHostController) {
-    val homeViewModel: HomeViewModel = viewModel()
+fun HomeView(navigationController: NavHostController, homeViewModel: HomeViewModel) {
     val cards by homeViewModel.cards.observeAsState(emptyList())
     val error by homeViewModel.error.observeAsState()
 
@@ -51,13 +50,16 @@ fun HomeView(navigationController: NavHostController) {
                 )
             } else {
                 CardList(cards = cards, onCardClick = { card ->
+                    // Actualizar el LiveData con la carta seleccionada
                     homeViewModel.selectCard(card)
+                    // Navegar a la pantalla de detalles sin pasar parámetros
                     navigationController.navigate(Routes.Screen2.route)
                 })
             }
         }
     }
 }
+
 
 
 
