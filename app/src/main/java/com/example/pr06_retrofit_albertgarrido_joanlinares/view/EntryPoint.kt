@@ -19,7 +19,7 @@ fun EntryPoint(navigationController: NavController) {
             HomeView(navigationController)
         }
         composable(Routes.Screen2.route) {
-            CardDetails(navigationController, it.arguments?.getString("id") ?: "")
+            CardDetails(navigationController)
         }
 
         composable(Routes.Screen3.route) {
