@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import coil.compose.rememberAsyncImagePainter
 import com.example.pr06_retrofit_albertgarrido_joanlinares.nav.Routes
 import com.example.pr06_retrofit_albertgarrido_joanlinares.viewmodel.CartViewModel
 
@@ -43,7 +44,7 @@ fun CartView(navigationController: NavHostController, cartViewModel: CartViewMod
                     .padding(vertical = 8.dp)
             ) {
                 Image(
-                    painter = painterResource(id = pokemon.image),
+                    painter = rememberAsyncImagePainter(model = pokemon.image), // ✅ Usa Coil para cargar la imagen desde URL
                     contentDescription = pokemon.name,
                     modifier = Modifier
                         .size(64.dp)

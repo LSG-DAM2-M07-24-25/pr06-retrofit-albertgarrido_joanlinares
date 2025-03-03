@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -29,8 +30,7 @@ fun CardDetails(
     homeViewModel: HomeViewModel
 ) {
     val card = homeViewModel.selectedCard.observeAsState().value
-    // Estado para el ícono de carrito
-    var isCartFilled by remember { mutableStateOf(false) }
+    val isCartFilled by homeViewModel.isAddedToCart.observeAsState(false) // ✅ LiveData para sincronizar estado
 
     if (card == null) {
         LazyColumn(
@@ -55,27 +55,18 @@ fun CardDetails(
         }
     } else {
         LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
+            modifier = Modifier.fillMaxSize().padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Ítem para el ícono de carrito en la esquina superior derecha
+            // Icono de carrito en la esquina superior derecha
             item {
                 Box(modifier = Modifier.fillMaxWidth()) {
                     IconButton(
-                        onClick = {
-                            isCartFilled = !isCartFilled
-                            homeViewModel.toggleCartStatus(card, isCartFilled)
-                        },
-                        modifier = Modifier
-                            .align(Alignment.TopEnd)
-                            .padding(16.dp)
-                            .padding(bottom = 30.dp)
-                            .size(48.dp)
+                        onClick = { homeViewModel.toggleCartStatus(card, !isCartFilled) },
+                        modifier = Modifier.align(Alignment.TopEnd).padding(16.dp).size(48.dp)
                     ) {
                         Icon(
-                            imageVector = Icons.Filled.ShoppingCart,
+                            imageVector = if (isCartFilled) Icons.Filled.ShoppingCart else Icons.Outlined.ShoppingCart,
                             contentDescription = "Carrito",
                             tint = if (isCartFilled) Color.Black else Color.Gray,
                             modifier = Modifier.size(48.dp)
@@ -83,20 +74,17 @@ fun CardDetails(
                     }
                 }
             }
-            // Ítem para la imagen centrada y más grande
+            // Imagen de la carta
             item {
                 Image(
                     painter = rememberAsyncImagePainter(model = card.images.large),
                     contentDescription = card.name,
                     contentScale = ContentScale.FillBounds,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(500.dp)
+                    modifier = Modifier.fillMaxWidth().height(500.dp)
                 )
             }
-            // Espacio entre la imagen y el nombre
             item { Spacer(modifier = Modifier.height(16.dp)) }
-            // Ítem para el nombre del Pokémon, centrado
+            // Nombre de la carta
             item {
                 Text(
                     text = card.name,
@@ -105,19 +93,18 @@ fun CardDetails(
                     color = MaterialTheme.colorScheme.onBackground
                 )
             }
-            // Ítem para el tipo del Pokémon, debajo del nombre
+            // Tipo de la carta
             item {
                 val cardType = card.types?.joinToString(", ") ?: card.supertype ?: "Desconocido"
                 Text(
-                    text = "Type: $cardType",
+                    text = "Tipo: $cardType",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Medium,
                     color = MaterialTheme.colorScheme.primary
                 )
             }
-            // Espacio antes del botón de volver
             item { Spacer(modifier = Modifier.height(24.dp)) }
-            // Ítem para el botón "Volver"
+            // Botón "Volver"
             item {
                 Button(onClick = { navigationController.popBackStack() }) {
                     Text("Volver")

@@ -7,12 +7,17 @@ import androidx.lifecycle.viewModelScope
 import com.example.pr06_retrofit_albertgarrido_joanlinares.api.CardRepository
 import com.example.pr06_retrofit_albertgarrido_joanlinares.model.Card
 import com.example.pr06_retrofit_albertgarrido_joanlinares.model.Pokemon
+import kotlinx.coroutines.Dispatchers
 import com.example.pr06_retrofit_albertgarrido_joanlinares.room.Repository as RoomRepository
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class HomeViewModel(
     private val repository: CardRepository = CardRepository()
 ) : ViewModel() {
+
+    private val _isAddedToCart = MutableLiveData<Boolean>()
+    val isAddedToCart: LiveData<Boolean> get() = _isAddedToCart
 
     private val _cards = MutableLiveData<List<Card>>(emptyList())
     val cards: LiveData<List<Card>> get() = _cards
@@ -35,7 +40,7 @@ class HomeViewModel(
             try {
                 val cardsList = repository.getAllCards()
                 if (!cardsList.isNullOrEmpty()) {
-                    _cards.value = cardsList
+                    _cards.value = cardsList!!
                 } else {
                     _error.value = "Error al obtener las cartas."
                 }
@@ -51,25 +56,32 @@ class HomeViewModel(
 
     // Función para actualizar el estado "addedToCart"
     fun toggleCartStatus(card: Card, isAdded: Boolean) {
-        viewModelScope.launch {
-            // Convertimos la Card a una entidad Pokemon.
-            // Reemplaza 0 por el recurso de imagen real (por ejemplo, R.drawable.ic_pokemon)
-            val pokemon = card.toPokemon(isAdded)
-            if (isAdded) {
-                cartRepository.addPokemonToCart(pokemon)
-            } else {
-                cartRepository.removePokemonFromCart(pokemon)
+        viewModelScope.launch(Dispatchers.IO) {  // ✅ Ejecuta en un hilo en background
+            try {
+                val pokemon = card.toPokemon(isAdded)
+                if (isAdded) {
+                    cartRepository.addPokemonToCart(pokemon)
+                } else {
+                    cartRepository.removePokemonFromCart(pokemon)
+                }
+
+                // ✅ Para actualizar la UI, lo hacemos en el hilo principal
+                withContext(Dispatchers.Main) {
+                    _isAddedToCart.value = isAdded
+                }
+            } catch (e: Exception) {
+                e.printStackTrace() // Loguear el error si ocurre
             }
         }
     }
-}
 
-// Función de extensión para convertir Card en Pokemon
-fun Card.toPokemon(isAdded: Boolean): Pokemon {
-    return Pokemon(
-        name = this.name,
-        type = this.types?.joinToString(", ") ?: this.supertype ?: "Desconocido",
-        image = 0, // Cambia 0 por el recurso de imagen adecuado, e.g. R.drawable.ic_pokemon
-        addedToCart = isAdded
-    )
+    // Función de extensión para convertir Card en Pokemon
+    fun Card.toPokemon(isAdded: Boolean): Pokemon {
+        return Pokemon(
+            name = this.name,
+            type = this.types?.joinToString(", ") ?: this.supertype ?: "Desconocido",
+            image = this.images.large, // Cambia 0 por el recurso de imagen adecuado, e.g. R.drawable.ic_pokemon
+            addedToCart = isAdded
+        )
+    }
 }
