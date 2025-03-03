@@ -1,8 +1,8 @@
 package com.example.pr06_retrofit_albertgarrido_joanlinares.api
 
+import androidx.tracing.perfetto.handshake.protocol.Response
 import com.example.pr06_retrofit_albertgarrido_joanlinares.model.CardResponse
 import okhttp3.OkHttpClient
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -10,7 +10,7 @@ import retrofit2.http.GET
 interface APIInterface {
 
     @GET("cards?q=set.id:sv8pt5")
-    suspend fun getCards(): Response<CardResponse>
+    suspend fun getCards(): retrofit2.Response<CardResponse>
 
     companion object {
         private const val BASE_URL = "https://api.pokemontcg.io/v2/"
