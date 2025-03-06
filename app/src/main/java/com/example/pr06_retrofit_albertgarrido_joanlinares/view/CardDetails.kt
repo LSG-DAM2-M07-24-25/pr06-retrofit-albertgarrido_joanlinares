@@ -196,7 +196,7 @@ fun CardDetails(
                             ?: selectedCard.supertype
                             ?: "Desconocido"
                         Text(
-                            text = "Tipo: $cardType",
+                            text = "Type: $cardType",
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Medium,
                             color = MaterialTheme.colorScheme.primary
