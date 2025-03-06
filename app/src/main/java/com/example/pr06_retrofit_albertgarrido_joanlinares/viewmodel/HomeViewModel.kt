@@ -52,21 +52,12 @@ class HomeViewModel(
         _selectedCard.value = card
     }
 
-    /**
-     * Comprueba en la base de datos si la carta (por nombre) está en el carrito.
-     * Se ejecuta en Dispatchers.IO para no bloquear la UI.
-     */
     suspend fun isCardInCart(name: String): Boolean {
         return withContext(Dispatchers.IO) {
             cartRepository.isAddedToCart(name)
         }
     }
 
-    /**
-     * Alterna el estado en Room (añade o quita la carta del carrito),
-     * sin actualizar un LiveData de boolean, sino que devuelves esa
-     * responsabilidad a la UI (CardDetails).
-     */
     fun toggleCartStatus(card: Card, isAdded: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -82,7 +73,7 @@ class HomeViewModel(
         }
     }
 
-    // Función de extensión para convertir Card en Pokemon (con la URL de la imagen)
+    // Función de extensión para convertir Card en Pokemon
     fun Card.toPokemon(isAdded: Boolean): Pokemon {
         return Pokemon(
             name = this.name,
