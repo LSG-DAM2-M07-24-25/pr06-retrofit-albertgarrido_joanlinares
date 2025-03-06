@@ -1,34 +1,49 @@
 package com.example.pr06_retrofit_albertgarrido_joanlinares.viewmodel
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import com.example.pr06_retrofit_albertgarrido_joanlinares.model.Card
+import com.example.pr06_retrofit_albertgarrido_joanlinares.model.Images
 import com.example.pr06_retrofit_albertgarrido_joanlinares.model.Pokemon
 import com.example.pr06_retrofit_albertgarrido_joanlinares.room.Repository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class CartViewModel : ViewModel() {
     private val repository = Repository()
 
-    private val _cartItems = MutableLiveData<List<Pokemon>>(emptyList())
-    val cartItems: LiveData<List<Pokemon>> get() = _cartItems
+    // MediatorLiveData nos permite observar los cambios en LiveData y transformarlos
+    private val _cartItems = MediatorLiveData<List<Card>>()
+    val cartItems: LiveData<List<Card>> get() = _cartItems
 
     init {
-        fetchCartItems()
-    }
-
-    private fun fetchCartItems() {
-        viewModelScope.launch {
-            // Llamamos a getAddedToCart() dentro de Dispatchers.IO para no bloquear la UI
-            val items = withContext(Dispatchers.IO) {
-                repository.getAddedToCart() // Devuelve MutableList<Pokemon>
+        _cartItems.addSource(repository.getAddedToCart()) { pokemons ->
+            _cartItems.value = pokemons.filter { it.addedToCart }.map { pokemon ->
+                Card(
+                    id = pokemon.name,
+                    name = pokemon.name,
+                    supertype = null,
+                    subtypes = emptyList(),
+                    hp = null,
+                    types = listOf(pokemon.type),
+                    images = Images(
+                        small = pokemon.image,
+                        large = pokemon.image
+                    )
+                )
             }
-            // Actualizamos el LiveData en el hilo principal
-            _cartItems.value = items
         }
     }
-}
 
+    /**
+     * Función de extensión para convertir un objeto Card en Pokemon,
+     * que podría usarse para actualizar el estado en la base de datos.
+     */
+    private fun Card.toPokemon(isAdded: Boolean): Pokemon {
+        return Pokemon(
+            name = this.name,
+            type = this.types!!.joinToString(", "),
+            image = this.images.large,
+            addedToCart = isAdded
+        )
+    }
+}

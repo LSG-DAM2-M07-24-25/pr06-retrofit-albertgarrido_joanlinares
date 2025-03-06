@@ -1,6 +1,7 @@
 package com.example.pr06_retrofit_albertgarrido_joanlinares.room
 
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -10,7 +11,7 @@ import com.example.pr06_retrofit_albertgarrido_joanlinares.model.Pokemon
 @Dao
 interface PokemonDao {
     @Query("SELECT * FROM pokemons WHERE is_favorite = 1")
-    fun getAddedToCart(): MutableList<Pokemon>
+    fun getAddedToCart(): LiveData<List<Pokemon>>
 
     @Query("SELECT * FROM pokemons WHERE name = :name")
     fun findByName(name: String): MutableList<Pokemon>

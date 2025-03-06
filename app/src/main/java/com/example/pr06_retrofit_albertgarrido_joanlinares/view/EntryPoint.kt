@@ -8,10 +8,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.pr06_retrofit_albertgarrido_joanlinares.nav.Routes
 import com.example.pr06_retrofit_albertgarrido_joanlinares.viewmodel.HomeViewModel
+import com.example.pr06_retrofit_albertgarrido_joanlinares.viewmodel.CartViewModel
 
 
 @Composable
-fun EntryPoint(navigationController: NavController, homeViewModel: HomeViewModel = viewModel()) {
+fun EntryPoint(navigationController: NavController, homeViewModel: HomeViewModel = viewModel(), cartViewModel: CartViewModel = viewModel()) {
 
     NavHost(
         navController = navigationController as NavHostController,
@@ -25,7 +26,7 @@ fun EntryPoint(navigationController: NavController, homeViewModel: HomeViewModel
         }
 
         composable(Routes.Screen3.route) {
-            CartView(navigationController)
+            CartView(navigationController, cartViewModel, homeViewModel)
         }
     }
 }

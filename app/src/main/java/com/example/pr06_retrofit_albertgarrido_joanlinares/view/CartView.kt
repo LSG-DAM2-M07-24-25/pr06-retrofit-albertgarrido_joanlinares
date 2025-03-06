@@ -1,7 +1,9 @@
 package com.example.pr06_retrofit_albertgarrido_joanlinares.view
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
@@ -10,65 +12,58 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import coil.compose.rememberAsyncImagePainter
+import com.example.pr06_retrofit_albertgarrido_joanlinares.model.Pokemon
 import com.example.pr06_retrofit_albertgarrido_joanlinares.nav.Routes
+import com.example.pr06_retrofit_albertgarrido_joanlinares.ui.card.CardList
 import com.example.pr06_retrofit_albertgarrido_joanlinares.viewmodel.CartViewModel
+import com.example.pr06_retrofit_albertgarrido_joanlinares.viewmodel.HomeViewModel
 
 @Composable
 fun CartView(
     navigationController: NavHostController,
-    cartViewModel: CartViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+    cartViewModel: CartViewModel = viewModel(),
+    homeViewModel: HomeViewModel = viewModel()
 ) {
-    // Obtenemos la lista de Pokémon en el LiveData
-    val cartItems by cartViewModel.cartItems.observeAsState(emptyList())
+    val favouriteItems by cartViewModel.cartItems.observeAsState(emptyList())
 
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp)
-    ) {
-        // Un botón para volver a la lista de cartas
-        item {
-            Button(
-                modifier = Modifier.padding(16.dp),
-                onClick = {
-                    navigationController.popBackStack()
-                }
-            ) {
-                Text(text = "Volver a Cartas")
-            }
+    BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+        val screenWidth = maxWidth
+        val paddingValue = when {
+            screenWidth < 600.dp -> 8.dp   // Pantalla pequeña
+            screenWidth < 840.dp -> 16.dp  // Pantalla mediana
+            else -> 24.dp                  // Pantalla grande
         }
-        // Mostramos cada Pokémon del carrito
-        items(cartItems) { pokemon ->
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp)
-            ) {
-                // Usamos Coil (rememberAsyncImagePainter) para URL
-                Image(
-                    painter = rememberAsyncImagePainter(model = pokemon.image),
-                    contentDescription = pokemon.name,
-                    modifier = Modifier
-                        .size(64.dp)
-                        .padding(end = 16.dp)
-                )
-                Column {
-                    Text(
-                        text = pokemon.name,
-                        fontSize = 18.sp
-                    )
-                    Text(
-                        text = pokemon.type,
-                        fontSize = 14.sp
-                    )
+
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValue)
+                .padding(top = 20.dp),
+            contentPadding = PaddingValues(paddingValue)
+        ) {
+            item {
+                Button(
+                    modifier = Modifier.padding(bottom = paddingValue),
+                    onClick = { navigationController.popBackStack() }
+                ) {
+                    Text(text = "Volver a Cartas")
                 }
+            }
+            item {
+                CardList(
+                    items = favouriteItems,
+                    onCardClick = { pokemon ->
+                        homeViewModel.selectCard(pokemon)
+                        navigationController.navigate(Routes.Screen2.route)
+                    },
+                    imageProvider = { pokemon -> pokemon.images.small },
+                    nameProvider = { pokemon -> pokemon.name }
+                )
+
             }
         }
     }
 }
-
