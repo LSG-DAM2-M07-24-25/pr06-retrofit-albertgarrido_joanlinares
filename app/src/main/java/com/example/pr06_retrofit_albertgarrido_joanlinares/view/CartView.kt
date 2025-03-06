@@ -19,13 +19,14 @@ import com.example.pr06_retrofit_albertgarrido_joanlinares.model.Pokemon
 import com.example.pr06_retrofit_albertgarrido_joanlinares.nav.Routes
 import com.example.pr06_retrofit_albertgarrido_joanlinares.ui.card.CardList
 import com.example.pr06_retrofit_albertgarrido_joanlinares.viewmodel.CartViewModel
+import com.example.pr06_retrofit_albertgarrido_joanlinares.viewmodel.HomeViewModel
 
 @Composable
 fun CartView(
     navigationController: NavHostController,
-    cartViewModel: CartViewModel = viewModel()
+    cartViewModel: CartViewModel = viewModel(),
+    homeViewModel: HomeViewModel = viewModel()
 ) {
-    // Se obtienen los Pokémon favoritos desde la BD filtrados en el ViewModel
     val favouriteItems by cartViewModel.cartItems.observeAsState(emptyList())
 
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
@@ -40,10 +41,9 @@ fun CartView(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValue)
-                .padding(top = 50.dp),
+                .padding(top = 20.dp),
             contentPadding = PaddingValues(paddingValue)
         ) {
-            // Botón para volver a la pantalla anterior
             item {
                 Button(
                     modifier = Modifier.padding(bottom = paddingValue),
@@ -52,11 +52,11 @@ fun CartView(
                     Text(text = "Volver a Cartas")
                 }
             }
-            // Reutilizamos CardList para mostrar las cartas favoritas (usando Pokémon directamente)
             item {
                 CardList(
                     items = favouriteItems,
                     onCardClick = { pokemon ->
+                        homeViewModel.selectCard(pokemon)
                         navigationController.navigate(Routes.Screen2.route)
                     },
                     imageProvider = { pokemon -> pokemon.images.small },

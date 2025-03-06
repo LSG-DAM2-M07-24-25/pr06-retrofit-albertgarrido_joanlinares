@@ -21,7 +21,6 @@ fun HomeView(navigationController: NavHostController, homeViewModel: HomeViewMod
     val cards by homeViewModel.cards.observeAsState(emptyList())
     val error by homeViewModel.error.observeAsState()
 
-    // BoxWithConstraints para adaptar el padding según el tamaño de pantalla
     BoxWithConstraints {
         val screenWidth = maxWidth
         val paddingValue = when {
@@ -39,7 +38,7 @@ fun HomeView(navigationController: NavHostController, homeViewModel: HomeViewMod
                 Button(
                     modifier = Modifier
                         .padding(paddingValue)
-                        .padding(top = 50.dp),
+                        .padding(top = 20.dp),
                     onClick = {
                         navigationController.navigate(Routes.Screen3.route)
                     }
@@ -59,7 +58,6 @@ fun HomeView(navigationController: NavHostController, homeViewModel: HomeViewMod
                         imageProvider = { card -> card.images.small },
                         nameProvider = { card -> card.name },
                         onCardClick = { card ->
-                            // Actualizar LiveData con la carta seleccionada y navegar a detalles
                             homeViewModel.selectCard(card)
                             navigationController.navigate(Routes.Screen2.route)
                         }

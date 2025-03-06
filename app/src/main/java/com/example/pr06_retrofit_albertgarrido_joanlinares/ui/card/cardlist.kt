@@ -21,14 +21,58 @@ fun <T> CardList(
     imageProvider: (T) -> String,
     nameProvider: (T) -> String
 ) {
-    Column(modifier = Modifier.fillMaxSize()) {
-        items.forEach { item ->
-            CardItem(
-                item = item,
-                onCardClick = { onCardClick(item) },
-                imageProvider = imageProvider,
-                nameProvider = nameProvider
-            )
+    val configuration = LocalConfiguration.current
+    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+
+    if (isLandscape) {
+        val rows = items.chunked(3)
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            rows.forEach { rowItems ->
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    rowItems.forEach { item ->
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                        ) {
+                            CardItem(
+                                item = item,
+                                onCardClick = { onCardClick(item) },
+                                imageProvider = imageProvider,
+                                nameProvider = nameProvider
+                            )
+                        }
+                    }
+                    if (rowItems.size < 3) {
+                        repeat(3 - rowItems.size) {
+                            Spacer(modifier = Modifier.weight(1f))
+                        }
+                    }
+                }
+            }
+        }
+    } else {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items.forEach { item ->
+                CardItem(
+                    item = item,
+                    onCardClick = { onCardClick(item) },
+                    imageProvider = imageProvider,
+                    nameProvider = nameProvider
+                )
+            }
         }
     }
 }
@@ -40,48 +84,21 @@ fun <T> CardItem(
     imageProvider: (T) -> String,
     nameProvider: (T) -> String
 ) {
-    val configuration = LocalConfiguration.current
-    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
-
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp)
             .clickable { onCardClick() },
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-
-            if (isLandscape) {
-                // Modo horizontal: la imagen más pequeña y centrada, pero con aspecto automático
-                Box(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Image(
-                        painter = rememberAsyncImagePainter(model = imageProvider(item)),
-                        contentDescription = nameProvider(item),
-                        modifier = Modifier
-                            // Un ancho fijo opcional, o un fillMaxWidth(0.5f), etc.
-                            .width(300.dp)
-                            // Mantén una relación de aspecto, p.ej. 16:9 ≈ 1.77f
-                            .aspectRatio(1.4f),
-                        contentScale = ContentScale.Fit
-                    )
-                }
-            } else {
-                // Modo vertical: ocupa todo el ancho, altura calculada por aspectRatio
-                Image(
-                    painter = rememberAsyncImagePainter(model = imageProvider(item)),
-                    contentDescription = nameProvider(item),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .aspectRatio(1.4f), // Ajusta la relación que quieras
-                    contentScale = ContentScale.Fit
-                )
-            }
-
-            Spacer(modifier = Modifier.height(8.dp))
+        Column(modifier = Modifier.padding(8.dp)) {
+            Image(
+                painter = rememberAsyncImagePainter(model = imageProvider(item)),
+                contentDescription = nameProvider(item),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(1f),
+                contentScale = ContentScale.Fit
+            )
         }
     }
 }

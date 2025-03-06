@@ -30,20 +30,17 @@ fun CardDetails(
     val selectedCard = homeViewModel.selectedCard.observeAsState().value
     var isCartFilled by remember { mutableStateOf(false) }
 
-    // Consultar el estado del carrito para la carta seleccionada
     LaunchedEffect(selectedCard) {
         selectedCard?.let {
             isCartFilled = homeViewModel.isCardInCart(it.name)
         }
     }
 
-    // Detectamos ancho disponible para breakpoints
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        // Si no hay carta seleccionada, mostramos error
         if (selectedCard == null) {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
@@ -72,14 +69,13 @@ fun CardDetails(
                 else -> 24.dp                  // Pantalla grande
             }
 
-            // También podemos definir minHeight y maxHeight según el ancho
+            // definir minHeight y maxHeight según el ancho
             val (minHeight, maxHeight) = when {
                 screenWidth < 600.dp -> 300.dp to 400.dp   // Pequeño
                 screenWidth < 840.dp -> 400.dp to 600.dp   // Mediano
                 else -> 500.dp to 700.dp                   // Grande
             }
 
-            // Detectamos orientación
             val configuration = LocalConfiguration.current
             val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
@@ -92,11 +88,10 @@ fun CardDetails(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    // Icono carrito en la parte superior
                     item {
                         Box(modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = 50.dp)) {
+                            .padding(top = 20.dp)) {
                             IconButton(
                                 onClick = {
                                     isCartFilled = !isCartFilled
@@ -115,7 +110,6 @@ fun CardDetails(
                             }
                         }
                     }
-                    // Imagen
                     item {
                         Image(
                             painter = rememberAsyncImagePainter(model = selectedCard.images.large),
@@ -126,7 +120,6 @@ fun CardDetails(
                                 .heightIn(min = minHeight, max = maxHeight) // << Altura adaptativa
                         )
                     }
-                    // Nombre de la carta
                     item {
                         Text(
                             text = selectedCard.name,
@@ -135,13 +128,12 @@ fun CardDetails(
                             color = MaterialTheme.colorScheme.onBackground
                         )
                     }
-                    // Tipo
                     item {
                         val cardType = selectedCard.types?.joinToString(", ")
                             ?: selectedCard.supertype
                             ?: "Desconocido"
                         Text(
-                            text = "Tipo: $cardType",
+                            text = "Type: $cardType",
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Medium,
                             color = MaterialTheme.colorScheme.primary
@@ -164,7 +156,6 @@ fun CardDetails(
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    // Imagen a la izquierda
                     Image(
                         painter = rememberAsyncImagePainter(model = selectedCard.images.large),
                         contentDescription = selectedCard.name,
@@ -174,7 +165,6 @@ fun CardDetails(
                             .heightIn(min = minHeight, max = maxHeight)
                             .padding(end = 8.dp)
                     )
-                    // Columna con la info a la derecha
                     Column(
                         modifier = Modifier
                             .weight(1f)
