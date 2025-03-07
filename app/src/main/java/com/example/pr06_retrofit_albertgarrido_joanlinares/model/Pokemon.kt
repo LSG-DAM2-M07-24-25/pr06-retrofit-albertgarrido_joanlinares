@@ -2,6 +2,7 @@ package com.example.pr06_retrofit_albertgarrido_joanlinares.model
 
 import androidx.annotation.DrawableRes
 import androidx.room.ColumnInfo
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -10,6 +11,7 @@ data class Pokemon(
     @PrimaryKey val name: String,
     val type: String,
     val image: String,
+    val averageSellPrice: Double?,
     @ColumnInfo(name = "is_favorite")
-    var addedToCart: Boolean = false
+    var addedToCart: Boolean = false,
 )

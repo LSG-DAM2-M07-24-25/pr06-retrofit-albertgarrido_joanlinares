@@ -74,12 +74,13 @@ class HomeViewModel(
     }
 
     // Función de extensión para convertir Card en Pokemon
-    fun Card.toPokemon(isAdded: Boolean): Pokemon {
+    private fun Card.toPokemon(isAdded: Boolean): Pokemon {
         return Pokemon(
             name = this.name,
             type = this.types?.joinToString(", ") ?: this.supertype ?: "Desconocido",
             image = this.images.large, // Es una URL, no un recurso local
-            addedToCart = isAdded
+            addedToCart = isAdded,
+            averageSellPrice = this.cardmarket?.prices?.averageSellPrice ?: 0.0
         )
     }
 }

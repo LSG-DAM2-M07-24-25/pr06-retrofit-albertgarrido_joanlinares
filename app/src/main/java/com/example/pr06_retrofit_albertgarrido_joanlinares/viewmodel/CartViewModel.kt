@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import com.example.pr06_retrofit_albertgarrido_joanlinares.model.Card
+import com.example.pr06_retrofit_albertgarrido_joanlinares.model.CardMarket
+import com.example.pr06_retrofit_albertgarrido_joanlinares.model.CardMarketPrices
 import com.example.pr06_retrofit_albertgarrido_joanlinares.model.Images
 import com.example.pr06_retrofit_albertgarrido_joanlinares.room.Repository
 
@@ -27,7 +29,15 @@ class CartViewModel : ViewModel() {
                     images = Images(
                         small = pokemon.image,
                         large = pokemon.image
-                    )
+                    ),
+                    cardmarket = CardMarket(
+                        url = null,
+                        updatedAt = null,
+                        prices = CardMarketPrices(
+                            averageSellPrice = pokemon.averageSellPrice
+                        )
+                    ),
+                    tcgplayer = null
                 )
             }
         }

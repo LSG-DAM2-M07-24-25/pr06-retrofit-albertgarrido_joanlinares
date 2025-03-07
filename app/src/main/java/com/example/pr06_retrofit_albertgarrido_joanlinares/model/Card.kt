@@ -7,5 +7,13 @@ data class Card(
     val subtypes: List<String>?,
     val hp: String?,
     val types: List<String>?,
-    val images: Images
-)
+    val images: Images,
+    val cardmarket: CardMarket?,
+    val tcgplayer: Tcgplayer?
+
+){
+    val marketPrice: Double
+        get() = cardmarket?.prices?.averageSellPrice ?: tcgplayer?.prices?.normal?.market ?: 0.0
+
+
+}

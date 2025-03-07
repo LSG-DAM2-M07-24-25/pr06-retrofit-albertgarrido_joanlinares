@@ -1,6 +1,7 @@
 package com.example.pr06_retrofit_albertgarrido_joanlinares.view
 
 import android.content.res.Configuration
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -139,6 +140,15 @@ fun CardDetails(
                             color = MaterialTheme.colorScheme.primary
                         )
                     }
+                    item {
+                        Text(
+                            text = "Market Price: ${selectedCard.marketPrice}€",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+
+                    }
                     // Espacio + Botón de volver
                     item {
                         Spacer(modifier = Modifier.height(24.dp))
@@ -201,6 +211,13 @@ fun CardDetails(
                             fontWeight = FontWeight.Medium,
                             color = MaterialTheme.colorScheme.primary
                         )
+                        Text(
+                            text = "Market Price: ${selectedCard.marketPrice}",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+
                         Spacer(modifier = Modifier.height(24.dp))
                         Button(onClick = { navigationController.popBackStack() }) {
                             Text("Volver")
