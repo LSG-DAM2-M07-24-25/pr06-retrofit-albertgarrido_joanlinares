@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.pr06_retrofit_albertgarrido_joanlinares.api.CardRepository
 import com.example.pr06_retrofit_albertgarrido_joanlinares.model.Card
 import com.example.pr06_retrofit_albertgarrido_joanlinares.model.Pokemon
+import com.example.pr06_retrofit_albertgarrido_joanlinares.ui.util.CartRefresh
 import kotlinx.coroutines.Dispatchers
 import com.example.pr06_retrofit_albertgarrido_joanlinares.room.Repository as RoomRepository
 import kotlinx.coroutines.launch
@@ -67,19 +68,23 @@ class HomeViewModel(
                 } else {
                     cartRepository.removePokemonFromCart(pokemon)
                 }
+                // Disparamos el evento de refresco
+                CartRefresh.refreshTrigger.postValue(true)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
 
+
     // Función de extensión para convertir Card en Pokemon
-    fun Card.toPokemon(isAdded: Boolean): Pokemon {
+    private fun Card.toPokemon(isAdded: Boolean): Pokemon {
         return Pokemon(
             name = this.name,
             type = this.types?.joinToString(", ") ?: this.supertype ?: "Desconocido",
             image = this.images.large, // Es una URL, no un recurso local
-            addedToCart = isAdded
+            addedToCart = isAdded,
+            averageSellPrice = this.cardmarket?.prices?.averageSellPrice ?: 0.0
         )
     }
 }

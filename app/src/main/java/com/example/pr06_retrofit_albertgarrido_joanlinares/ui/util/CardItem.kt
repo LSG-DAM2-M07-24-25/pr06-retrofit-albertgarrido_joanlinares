@@ -1,4 +1,4 @@
-package com.example.pr06_retrofit_albertgarrido_joanlinares.ui.card
+package com.example.pr06_retrofit_albertgarrido_joanlinares.ui.util
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -36,4 +36,3 @@ fun <T> CardItem(
         }
     }
 }
-

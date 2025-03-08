@@ -6,8 +6,12 @@ import com.example.pr06_retrofit_albertgarrido_joanlinares.model.Pokemon
 class Repository {
     private val daoInterface = PokemonApplication.database.pokemonDao()
 
-    fun getAddedToCart(): LiveData<List<Pokemon>> {
+    fun getAddedToCart(): MutableList<Pokemon> {
         return daoInterface.getAddedToCart()
+    }
+
+    fun getTotalCartPrice(): LiveData<Float> {
+        return daoInterface.getTotalCartPrice()
     }
 
     suspend fun findByName(pokemon: Pokemon): Boolean =

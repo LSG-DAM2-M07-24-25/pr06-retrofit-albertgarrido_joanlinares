@@ -9,7 +9,7 @@ import retrofit2.http.GET
 
 interface APIInterface {
 
-    @GET("cards?q=set.id:sv8pt5")
+    @GET("cards?q=set.id:sv8")
     suspend fun getCards(): retrofit2.Response<CardResponse>
 
     companion object {

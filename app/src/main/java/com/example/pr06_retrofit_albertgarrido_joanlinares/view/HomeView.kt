@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.pr06_retrofit_albertgarrido_joanlinares.nav.Routes
-import com.example.pr06_retrofit_albertgarrido_joanlinares.ui.card.CardList
+import com.example.pr06_retrofit_albertgarrido_joanlinares.ui.util.CardList
 import com.example.pr06_retrofit_albertgarrido_joanlinares.viewmodel.HomeViewModel
 
 @Composable

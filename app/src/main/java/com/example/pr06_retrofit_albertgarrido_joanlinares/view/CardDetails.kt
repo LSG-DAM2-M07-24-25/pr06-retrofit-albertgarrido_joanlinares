@@ -61,7 +61,7 @@ fun CardDetails(
                 }
             }
         } else {
-            // Breakpoints para paddings
+            // paddings
             val screenWidth = maxWidth
             val paddingValue = when {
                 screenWidth < 600.dp -> 8.dp   // Pantalla pequeña
@@ -69,7 +69,6 @@ fun CardDetails(
                 else -> 24.dp                  // Pantalla grande
             }
 
-            // definir minHeight y maxHeight según el ancho
             val (minHeight, maxHeight) = when {
                 screenWidth < 600.dp -> 300.dp to 400.dp   // Pequeño
                 screenWidth < 840.dp -> 400.dp to 600.dp   // Mediano
@@ -139,6 +138,15 @@ fun CardDetails(
                             color = MaterialTheme.colorScheme.primary
                         )
                     }
+                    item {
+                        Text(
+                            text = "Market Price: ${selectedCard.marketPrice}€",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+
+                    }
                     // Espacio + Botón de volver
                     item {
                         Spacer(modifier = Modifier.height(24.dp))
@@ -201,6 +209,13 @@ fun CardDetails(
                             fontWeight = FontWeight.Medium,
                             color = MaterialTheme.colorScheme.primary
                         )
+                        Text(
+                            text = "Market Price: ${selectedCard.marketPrice}",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+
                         Spacer(modifier = Modifier.height(24.dp))
                         Button(onClick = { navigationController.popBackStack() }) {
                             Text("Volver")

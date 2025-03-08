@@ -11,7 +11,7 @@ import com.example.pr06_retrofit_albertgarrido_joanlinares.model.Pokemon
 @Dao
 interface PokemonDao {
     @Query("SELECT * FROM pokemons WHERE is_favorite = 1")
-    fun getAddedToCart(): LiveData<List<Pokemon>>
+    fun getAddedToCart(): MutableList<Pokemon>
 
     @Query("SELECT * FROM pokemons WHERE name = :name")
     fun findByName(name: String): MutableList<Pokemon>
@@ -27,4 +27,7 @@ interface PokemonDao {
 
     @Query("UPDATE pokemons SET is_favorite = :isAdded WHERE name = :name")
     fun updateAddedToCartStatus(name: String, isAdded: Boolean)
+
+    @Query("SELECT SUM(averageSellPrice) FROM pokemons WHERE is_favorite = 1")
+    fun getTotalCartPrice(): LiveData<Float>
 }
