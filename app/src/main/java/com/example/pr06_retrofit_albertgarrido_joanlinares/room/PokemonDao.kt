@@ -13,8 +13,8 @@ interface PokemonDao {
     @Query("SELECT * FROM pokemons WHERE is_favorite = 1")
     fun getAddedToCart(): MutableList<Pokemon>
 
-    @Query("SELECT * FROM pokemons WHERE name = :name")
-    fun findByName(name: String): MutableList<Pokemon>
+    @Query("SELECT * FROM pokemons WHERE name LIKE '%' || :searchText || '%'")
+    fun findPokemonsByName(searchText: String): MutableList<Pokemon>
 
     @Query("SELECT is_favorite FROM pokemons WHERE name = :name")
     fun isAddedToCart(name: String): Boolean
