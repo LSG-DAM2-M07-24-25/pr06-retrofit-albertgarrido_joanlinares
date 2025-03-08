@@ -9,11 +9,10 @@ data class Card(
     val types: List<String>?,
     val images: Images,
     val cardmarket: CardMarket?,
-    val tcgplayer: Tcgplayer?
 
 ){
     val marketPrice: Double
-        get() = cardmarket?.prices?.averageSellPrice ?: tcgplayer?.prices?.normal?.market ?: 0.0
+        get() = cardmarket?.prices?.averageSellPrice ?: 0.0
 
 
 }

@@ -1,7 +1,6 @@
 package com.example.pr06_retrofit_albertgarrido_joanlinares.view
 
 import android.content.res.Configuration
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -62,7 +61,7 @@ fun CardDetails(
                 }
             }
         } else {
-            // Breakpoints para paddings
+            // paddings
             val screenWidth = maxWidth
             val paddingValue = when {
                 screenWidth < 600.dp -> 8.dp   // Pantalla pequeña
@@ -70,7 +69,6 @@ fun CardDetails(
                 else -> 24.dp                  // Pantalla grande
             }
 
-            // definir minHeight y maxHeight según el ancho
             val (minHeight, maxHeight) = when {
                 screenWidth < 600.dp -> 300.dp to 400.dp   // Pequeño
                 screenWidth < 840.dp -> 400.dp to 600.dp   // Mediano
