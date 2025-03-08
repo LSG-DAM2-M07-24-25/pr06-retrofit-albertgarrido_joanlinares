@@ -14,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.pr06_retrofit_albertgarrido_joanlinares.ui.util.SearchBar
 import com.example.pr06_retrofit_albertgarrido_joanlinares.viewmodel.SearchBarViewModel
@@ -21,7 +22,7 @@ import com.example.pr06_retrofit_albertgarrido_joanlinares.viewmodel.SearchBarVi
 @Composable
 fun SearchView(
     navigationController: NavHostController,
-    searchBarViewModel: SearchBarViewModel
+    searchBarViewModel: SearchBarViewModel = viewModel()
 ) {
     val searchHistory by searchBarViewModel.searchHistory.observeAsState(emptyList())
 
@@ -30,7 +31,7 @@ fun SearchView(
             .fillMaxSize()
             .padding(20.dp)
     ) {
-        // SearchBar en modo activo para permitir escribir.
+        // SearchBar con historial
         SearchBar(
             searchBarViewModel = searchBarViewModel,
             navigationController = navigationController,
@@ -45,8 +46,8 @@ fun SearchView(
                     modifier = Modifier
                         .padding(16.dp)
                         .clickable {
-                            // Al seleccionar un término del historial, se guarda y se regresa a HomeView.
                             searchBarViewModel.selectSearchTerm(text)
+                            searchBarViewModel.onSearch(text)
                             navigationController.popBackStack()
                         }
                 )
@@ -54,4 +55,3 @@ fun SearchView(
         }
     }
 }
-

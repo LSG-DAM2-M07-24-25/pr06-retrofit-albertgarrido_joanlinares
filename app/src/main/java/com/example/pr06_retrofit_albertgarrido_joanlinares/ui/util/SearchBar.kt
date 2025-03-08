@@ -6,8 +6,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
@@ -39,27 +42,32 @@ fun SearchBar(
     active: Boolean
 ) {
     val searchedText by searchBarViewModel.searchedText.observeAsState("")
-    val searchHistory by searchBarViewModel.searchHistory.observeAsState(emptyList())
+    val historyList by searchBarViewModel.searchHistory.observeAsState(emptyList())
 
     if (active) {
-        // Modo activo: se permite escribir
+        // Modo Activo
         SearchBar(
             query = searchedText,
             onQueryChange = { text -> searchBarViewModel.onSearchTextChange(text) },
             onSearch = { text ->
                 searchBarViewModel.onSearch(text)
-                onSearchComplete() // Ejemplo: volver a HomeView
+                onSearchComplete() // Vuelve a homeview con filtrados
             },
             active = true,
-            onActiveChange = { /* Opcional: gestionar estado */ },
+            onActiveChange = { },
             leadingIcon = {
+                // luba interactiva
                 Icon(
                     imageVector = Icons.Filled.Search,
-                    contentDescription = "Buscar"
+                    contentDescription = "Buscar",
+                    modifier = Modifier.clickable {
+                        searchBarViewModel.onSearch(searchedText)
+                        onSearchComplete()
+                    }
                 )
             },
             trailingIcon = {
-                if (searchHistory.isNotEmpty()) {
+                if (historyList.isNotEmpty()) {
                     Icon(
                         imageVector = Icons.Filled.Clear,
                         contentDescription = "Limpiar historial",
@@ -74,10 +82,31 @@ fun SearchBar(
                 .padding(16.dp)
                 .clip(RoundedCornerShape(16.dp))
         ) {
-            // Opcional: sugerencias mientras se escribe
+            // historial
+            if (historyList.isNotEmpty()) {
+                Box(modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)) {
+                    LazyColumn(modifier = Modifier.fillMaxWidth()) {
+                        items(historyList) { textItem ->
+                            Text(
+                                text = textItem,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(8.dp)
+                                    .clickable {
+                                        searchBarViewModel.selectSearchTerm(textItem)
+                                        searchBarViewModel.onSearch(textItem)
+                                        onSearchComplete()
+                                    }
+                            )
+                        }
+                    }
+                }
+            }
         }
     } else {
-        // Modo inactivo: se muestra el campo con reset a la izquierda y es clickable para navegar a SearchView
+        // Inactivo, nav to search view
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -99,7 +128,6 @@ fun SearchBar(
                     .clip(RoundedCornerShape(16.dp))
                     .background(Color(0xFFF0F0F0))
                     .clickable {
-                        // Navega a SearchView para permitir la entrada
                         navigationController.navigate(Routes.Screen4.route)
                     }
                     .padding(horizontal = 16.dp, vertical = 12.dp)

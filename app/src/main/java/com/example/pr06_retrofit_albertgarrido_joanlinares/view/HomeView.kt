@@ -43,7 +43,7 @@ fun HomeView(
     val cards by homeViewModel.cards.observeAsState(emptyList())
     val error by homeViewModel.error.observeAsState()
 
-    // Filtrado local basado en el término de búsqueda compartido
+    // Filtrado local
     val searchText by searchBarViewModel.searchedText.observeAsState("")
     val filteredCards = if (searchText.isEmpty()) cards else cards.filter { it.name.contains(searchText, ignoreCase = true) }
 
@@ -71,7 +71,6 @@ fun HomeView(
                     Text(text = "Carrito")
                 }
             }
-            // SearchBar en modo inactivo
             item {
                 SearchBar(
                     searchBarViewModel = searchBarViewModel,
@@ -80,7 +79,7 @@ fun HomeView(
                     active = false
                 )
             }
-            // Lista de cartas filtradas
+            // Cartas Filtradas
             item {
                 if (error != null) {
                     Text(
