@@ -28,7 +28,7 @@ class CartViewModel : ViewModel() {
         fetchCartItems()
         fetchTotalPrice()
 
-        // evento de refresco para actualizar el carrito
+        // Evento de refresco para actualizar el carrito
         CartRefresh.refreshTrigger.observeForever { refresh ->
             if (refresh == true) {
                 fetchCartItems()
@@ -46,7 +46,7 @@ class CartViewModel : ViewModel() {
             }
             val cards = pokemons.map { pokemon ->
                 Card(
-                    id = pokemon.name,
+                    id = pokemon.id,
                     name = pokemon.name,
                     supertype = null,
                     subtypes = emptyList(),
@@ -80,4 +80,3 @@ class CartViewModel : ViewModel() {
         }
     }
 }
-

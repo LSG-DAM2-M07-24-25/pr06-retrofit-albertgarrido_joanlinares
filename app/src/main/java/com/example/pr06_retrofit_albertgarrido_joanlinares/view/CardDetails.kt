@@ -32,7 +32,8 @@ fun CardDetails(
 
     LaunchedEffect(selectedCard) {
         selectedCard?.let {
-            isCartFilled = homeViewModel.isCardInCart(it.name)
+            // 🔹 Se usa el id para la comprobación, manteniendo la consistencia con el resto de la app
+            isCartFilled = homeViewModel.isCardInCart(it.id)
         }
     }
 
@@ -88,9 +89,11 @@ fun CardDetails(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     item {
-                        Box(modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 20.dp)) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 20.dp)
+                        ) {
                             IconButton(
                                 onClick = {
                                     isCartFilled = !isCartFilled
@@ -101,7 +104,10 @@ fun CardDetails(
                                     .size(48.dp)
                             ) {
                                 Icon(
-                                    imageVector = if (isCartFilled) Icons.Filled.ShoppingCart else Icons.Outlined.ShoppingCart,
+                                    imageVector = if (isCartFilled)
+                                        Icons.Filled.ShoppingCart
+                                    else
+                                        Icons.Outlined.ShoppingCart,
                                     contentDescription = "Carrito",
                                     tint = if (isCartFilled) Color.Black else Color.Gray,
                                     modifier = Modifier.size(48.dp)
@@ -145,7 +151,6 @@ fun CardDetails(
                             fontWeight = FontWeight.Medium,
                             color = MaterialTheme.colorScheme.primary
                         )
-
                     }
                     // Espacio + Botón de volver
                     item {
@@ -188,7 +193,10 @@ fun CardDetails(
                             modifier = Modifier.size(48.dp)
                         ) {
                             Icon(
-                                imageVector = if (isCartFilled) Icons.Filled.ShoppingCart else Icons.Outlined.ShoppingCart,
+                                imageVector = if (isCartFilled)
+                                    Icons.Filled.ShoppingCart
+                                else
+                                    Icons.Outlined.ShoppingCart,
                                 contentDescription = "Carrito",
                                 tint = if (isCartFilled) Color.Black else Color.Gray,
                                 modifier = Modifier.size(48.dp)
@@ -215,7 +223,6 @@ fun CardDetails(
                             fontWeight = FontWeight.Medium,
                             color = MaterialTheme.colorScheme.primary
                         )
-
                         Spacer(modifier = Modifier.height(24.dp))
                         Button(onClick = { navigationController.popBackStack() }) {
                             Text("Volver")
