@@ -20,14 +20,15 @@ class Repository {
         return daoInterface.findPokemonsByName(text)
     }
 
-    suspend fun isAddedToCart(name: String): Boolean = daoInterface.isAddedToCart(name)
+    // Ahora usa id en lugar de name
+    suspend fun isAddedToCart(id: String): Boolean = daoInterface.isAddedToCart(id)
 
     suspend fun addPokemonToCart(pokemon: Pokemon) = daoInterface.addPokemonToCart(pokemon)
 
     suspend fun removePokemonFromCart(pokemon: Pokemon) = daoInterface.removePokemonFromCart(pokemon)
 
-    suspend fun updateAddedToCartStatus(name: String, isAdded: Boolean) =
-        daoInterface.updateAddedToCartStatus(name, isAdded)
+    suspend fun updateAddedToCartStatus(id: String, isAdded: Boolean) =
+        daoInterface.updateAddedToCartStatus(id, isAdded)
 
     // Métodos para Search History
     suspend fun getSearchHistory(): List<SearchHistoryEntry> {

@@ -8,7 +8,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "pokemons")
 data class Pokemon(
-    @PrimaryKey val name: String,
+    @PrimaryKey val id: String, // Campo único, p.ej. "pikachu-001" o un identificador generado
+    val name: String,
     val type: String,
     val image: String,
     val averageSellPrice: Double?,

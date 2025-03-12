@@ -9,9 +9,9 @@ import com.example.pr06_retrofit_albertgarrido_joanlinares.model.Card
 import com.example.pr06_retrofit_albertgarrido_joanlinares.model.Pokemon
 import com.example.pr06_retrofit_albertgarrido_joanlinares.ui.util.CartRefresh
 import kotlinx.coroutines.Dispatchers
-import com.example.pr06_retrofit_albertgarrido_joanlinares.room.Repository as RoomRepository
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import com.example.pr06_retrofit_albertgarrido_joanlinares.room.Repository as RoomRepository
 
 class HomeViewModel(
     private val repository: CardRepository = CardRepository()
@@ -23,11 +23,9 @@ class HomeViewModel(
     private val _error = MutableLiveData<String?>()
     val error: LiveData<String?> get() = _error
 
-    // LiveData para la carta seleccionada
     private val _selectedCard = MutableLiveData<Card?>()
     val selectedCard: LiveData<Card?> get() = _selectedCard
 
-    // Repository para operaciones en Room (carrito)
     private val cartRepository = RoomRepository()
 
     init {
@@ -53,9 +51,9 @@ class HomeViewModel(
         _selectedCard.value = card
     }
 
-    suspend fun isCardInCart(name: String): Boolean {
+    suspend fun isCardInCart(id: String): Boolean {
         return withContext(Dispatchers.IO) {
-            cartRepository.isAddedToCart(name)
+            cartRepository.isAddedToCart(id)
         }
     }
 
@@ -63,26 +61,33 @@ class HomeViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val pokemon = card.toPokemon(isAdded)
+                val exists = cartRepository.isAddedToCart(pokemon.id)
+
                 if (isAdded) {
-                    cartRepository.addPokemonToCart(pokemon)
+                    if (!exists) {
+                        cartRepository.addPokemonToCart(pokemon)
+                    }
                 } else {
-                    cartRepository.removePokemonFromCart(pokemon)
+                    if (exists) {
+                        cartRepository.removePokemonFromCart(pokemon)
+                    }
                 }
-                // Disparamos el evento de refresco
+
+                cartRepository.updateAddedToCartStatus(pokemon.id, isAdded)
                 CartRefresh.refreshTrigger.postValue(true)
+
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
 
-
-    // Función de extensión para convertir Card en Pokemon
     private fun Card.toPokemon(isAdded: Boolean): Pokemon {
         return Pokemon(
+            id = this.id,
             name = this.name,
             type = this.types?.joinToString(", ") ?: this.supertype ?: "Desconocido",
-            image = this.images.large, // Es una URL, no un recurso local
+            image = this.images.large,
             addedToCart = isAdded,
             averageSellPrice = this.cardmarket?.prices?.averageSellPrice ?: 0.0
         )
