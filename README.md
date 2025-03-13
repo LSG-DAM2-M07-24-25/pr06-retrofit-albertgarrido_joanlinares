@@ -1,4 +1,4 @@
-Pokémon Cards App
+pr06-retrofit-albertgarrido_joanlinares
 =================
 
 📖 Descripción
@@ -67,11 +67,6 @@ Esta aplicación Android desarrollada en Kotlin con Jetpack Compose permite expl
 -   **⚡ Corrutinas:** Manejo asíncrono de operaciones.
 -   **🖼️ Coil:** Carga eficiente de imágenes remotas.
 -   **🌀 LiveData:** Gestión reactiva de estado en la UI.
-
-🔎 Barra de Búsqueda Inteligente
---------------------------------
-
--   Historial gestionado localmente, con opciones para reutilizar o limpiar términos de búsqueda anteriores.
 
 📂 Estructura del Proyecto
 --------------------------
