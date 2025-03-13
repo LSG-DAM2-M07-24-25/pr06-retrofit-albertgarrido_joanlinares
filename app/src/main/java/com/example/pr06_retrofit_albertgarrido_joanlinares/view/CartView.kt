@@ -19,6 +19,16 @@ import com.example.pr06_retrofit_albertgarrido_joanlinares.ui.util.CardList
 import com.example.pr06_retrofit_albertgarrido_joanlinares.viewmodel.CartViewModel
 import com.example.pr06_retrofit_albertgarrido_joanlinares.viewmodel.HomeViewModel
 
+/**
+ * Composable que muestra la vista del carrito con las cartas Pokémon seleccionadas por el usuario.
+ *
+ * Presenta una lista dinámica de cartas favoritas almacenadas localmente mediante Room, junto con el precio total calculado.
+ * Adaptado responsivamente para diferentes tamaños de pantalla con padding dinámico según ancho.
+ *
+ * @param navigationController Controlador de navegación para gestionar la transición entre pantallas.
+ * @param cartViewModel ViewModel encargado de gestionar el estado del carrito y obtener los elementos añadidos.
+ * @param homeViewModel ViewModel utilizado para gestionar la selección de cartas desde esta vista.
+ */
 @Composable
 fun CartView(
     navigationController: NavHostController,

@@ -15,6 +15,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+/**
+ * ViewModel que gestiona los elementos del carrito de compras y su precio total.
+ */
 class CartViewModel : ViewModel() {
     private val repository = Repository()
 
@@ -28,7 +31,7 @@ class CartViewModel : ViewModel() {
         fetchCartItems()
         fetchTotalPrice()
 
-        // Evento de refresco para actualizar el carrito
+        // Observa el trigger para refrescar datos del carrito.
         CartRefresh.refreshTrigger.observeForever { refresh ->
             if (refresh == true) {
                 fetchCartItems()
@@ -39,6 +42,10 @@ class CartViewModel : ViewModel() {
         }
     }
 
+    /**
+     * Obtiene las cartas añadidas al carrito desde la base de datos local
+     * y las transforma al formato Card para su presentación en la vista.
+     */
     private fun fetchCartItems() {
         viewModelScope.launch {
             val pokemons: MutableList<Pokemon> = withContext(Dispatchers.IO) {
@@ -68,7 +75,9 @@ class CartViewModel : ViewModel() {
             _cartItems.postValue(cards)
         }
     }
-
+    /**
+     * Obtiene el precio total de todos los elementos presentes en el carrito de compras.
+     */
     private fun fetchTotalPrice() {
         viewModelScope.launch {
             val totalPriceLiveData: LiveData<Float> = withContext(Dispatchers.IO) {

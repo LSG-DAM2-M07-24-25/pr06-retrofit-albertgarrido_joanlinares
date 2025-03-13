@@ -22,6 +22,16 @@ import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.example.pr06_retrofit_albertgarrido_joanlinares.viewmodel.HomeViewModel
 
+/**
+ * Composable que muestra los detalles de una carta Pokémon específica seleccionada por el usuario.
+ *
+ * Este componente adapta su presentación de acuerdo con la orientación y tamaño de pantalla,
+ * mostrando detalles como imagen, nombre, tipo y precio de mercado. También permite agregar o eliminar
+ * la carta del carrito directamente desde la vista de detalles.
+ *
+ * @param navigationController Controlador para gestionar la navegación entre vistas.
+ * @param homeViewModel ViewModel que contiene la lógica y estado relacionado con la carta seleccionada.
+ */
 @Composable
 fun CardDetails(
     navigationController: NavHostController,

@@ -11,6 +11,17 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 
+/**
+ * Composable genérico que representa una tarjeta (Card) para mostrar elementos con imagen y nombre.
+ *
+ * Se puede utilizar con cualquier tipo de objeto genérico `T`, siempre que se proporcionen funciones para obtener
+ * la imagen y el nombre del elemento.
+ *
+ * @param item Elemento de tipo genérico `T` que se representará en la tarjeta.
+ * @param onCardClick Acción a ejecutar cuando el usuario haga clic en la tarjeta.
+ * @param imageProvider Función lambda que recibe el elemento `T` y devuelve la URL de su imagen.
+ * @param nameProvider Función lambda que recibe el elemento `T` y devuelve su nombre como texto.
+ */
 @Composable
 fun <T> CardItem(
     item: T,

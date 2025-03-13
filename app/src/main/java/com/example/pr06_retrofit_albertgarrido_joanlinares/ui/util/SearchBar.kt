@@ -33,6 +33,20 @@ import androidx.navigation.NavHostController
 import com.example.pr06_retrofit_albertgarrido_joanlinares.nav.Routes
 import com.example.pr06_retrofit_albertgarrido_joanlinares.viewmodel.SearchBarViewModel
 
+/**
+ * Composable que representa una barra de búsqueda con historial y navegación integrada.
+ *
+ * Este componente permite a los usuarios buscar elementos, ver un historial de búsquedas previas
+ * y navegar a la pantalla de búsqueda avanzada cuando está en modo inactivo.
+ *
+ * - En **modo activo**, muestra un campo de búsqueda interactivo con opciones de autocompletado e historial.
+ * - En **modo inactivo**, permite navegar a una vista de búsqueda más completa.
+ *
+ * @param searchBarViewModel ViewModel encargado de gestionar la lógica de búsqueda y el historial.
+ * @param navigationController Controlador de navegación para gestionar el acceso a la pantalla de búsqueda avanzada.
+ * @param onSearchComplete Acción que se ejecuta al completar una búsqueda (normalmente para actualizar la vista principal).
+ * @param active Indica si la barra de búsqueda está activa o inactiva.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchBar(

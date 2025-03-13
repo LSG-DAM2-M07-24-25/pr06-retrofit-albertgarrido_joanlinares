@@ -11,7 +11,17 @@ import com.example.pr06_retrofit_albertgarrido_joanlinares.viewmodel.HomeViewMod
 import com.example.pr06_retrofit_albertgarrido_joanlinares.viewmodel.CartViewModel
 import com.example.pr06_retrofit_albertgarrido_joanlinares.viewmodel.SearchBarViewModel
 
-
+/**
+ * Composable que define el punto de entrada y gestiona la navegación principal de la aplicación Pokémon.
+ *
+ * Utiliza NavHost para gestionar las rutas principales, incluyendo la pantalla principal de cartas,
+ * la vista de detalles individuales de cada carta, el carrito de cartas favoritas y la pantalla de búsqueda avanzada.
+ *
+ * @param navigationController Controlador principal de navegación para gestionar las rutas.
+ * @param homeViewModel ViewModel que administra el estado de la vista principal y detalles de cartas.
+ * @param cartViewModel ViewModel que gestiona el estado del carrito local.
+ * @param searchBarViewModel ViewModel que administra la lógica y el historial de la barra de búsqueda.
+ */
 @Composable
 fun EntryPoint(navigationController: NavController, homeViewModel: HomeViewModel = viewModel(), cartViewModel: CartViewModel = viewModel(), searchBarViewModel: SearchBarViewModel = viewModel()) {
 
