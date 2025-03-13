@@ -34,6 +34,16 @@ import com.example.pr06_retrofit_albertgarrido_joanlinares.ui.util.SearchBar
 import com.example.pr06_retrofit_albertgarrido_joanlinares.viewmodel.HomeViewModel
 import com.example.pr06_retrofit_albertgarrido_joanlinares.viewmodel.SearchBarViewModel
 
+/**
+ * Composable que representa la pantalla principal de la aplicación, mostrando la lista de cartas Pokémon.
+ *
+ * Incluye una barra de búsqueda con historial, permite filtrar las cartas en tiempo real y acceder a los detalles de cada carta.
+ * También contiene un botón para navegar a la pantalla del carrito. La disposición se adapta a diferentes tamaños de pantalla.
+ *
+ * @param navigationController Controlador de navegación para gestionar los cambios de pantalla.
+ * @param homeViewModel ViewModel encargado de manejar los datos de las cartas y la lógica de negocio.
+ * @param searchBarViewModel ViewModel que gestiona la barra de búsqueda y su historial.
+ */
 @Composable
 fun HomeView(
     navigationController: NavHostController,

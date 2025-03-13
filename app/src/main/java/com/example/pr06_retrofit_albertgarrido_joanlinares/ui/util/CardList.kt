@@ -7,6 +7,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 
+/**
+ * Composable que muestra una lista de tarjetas (`CardItem`) con un diseño adaptable
+ * según la orientación del dispositivo.
+ *
+ * - En **modo vertical**, las tarjetas se muestran en una columna.
+ * - En **modo horizontal**, las tarjetas se organizan en filas de hasta 3 elementos.
+ *
+ * @param items Lista de elementos de tipo `T` a mostrar en las tarjetas.
+ * @param onCardClick Acción a ejecutar cuando el usuario haga clic en una tarjeta.
+ * @param imageProvider Función lambda que recibe un elemento `T` y devuelve la URL de su imagen.
+ * @param nameProvider Función lambda que recibe un elemento `T` y devuelve su nombre como texto.
+ */
 @Composable
 fun <T> CardList(
     items: List<T>,
